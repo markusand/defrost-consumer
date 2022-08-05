@@ -29,7 +29,7 @@ const isDate = date => isValid(new Date(date));
     await defrost.authenticate(credentials);
     console.log('· Logged successfuly');
 
-    // List asked rasters available in the API 
+    // List asked rasters available in the API
     const rasters = await defrost.getRastersList(dates);
 
     // Retrieve all rasters and save them as files
@@ -42,14 +42,13 @@ const isDate = date => isValid(new Date(date));
         console.log(`· Saved ${raster.date}`);
       } catch (error) {
         console.log(`[x] Error with ${raster.date}: `, error.response.data.message);
-        return Promise.reject(error);
       }
     });
 
     // Wait until everything is saved
     await Promise.allSettled(saved);
     console.log('· Finished retrieving rasters');
-  } catch(error) {
+  } catch (error) {
     console.error(`[x] ${error.message}`);
   }
 })();
