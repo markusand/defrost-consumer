@@ -19,10 +19,10 @@ const { DEFROST_USER, DEFROST_PSWD } = process.env;
     // Authenticate the API
     const credentials = { username: DEFROST_USER, password: DEFROST_PSWD };
     await defrost.authenticate(credentials);
-    console.log('· Logged successfuly');
 
     // List asked rasters available in the API
     const rasters = await defrost.getRastersList(dates);
+    if (!rasters.length) throw new Error('No rasters found for this dates');
 
     // Retrieve all rasters and save them as files
     const saved = rasters.map(async raster => {
@@ -31,16 +31,16 @@ const { DEFROST_USER, DEFROST_PSWD } = process.env;
         const { pathname } = new URL(`../images/${raster.file_name}`, import.meta.url);
         const stream = await defrost.getRasterStream(raster.url);
         await fs.saveStream(pathname, stream);
-        console.log(`· Saved ${raster.date}`);
+        console.log('\x1b[32m', `Saved ${raster.date}`, '\x1b[0m');
       } catch (error) {
-        console.log(`[x] Error with ${raster.date}: `, error.response.data.message);
+        console.log('\x1b[31m', `Raster for ${raster.date}: ${error.message}`, '\x1b[0m');
       }
     });
 
     // Wait until everything is saved
     await Promise.allSettled(saved);
-    console.log('· Finished retrieving rasters');
+    console.log('\n', '\x1b[42m', 'Done', '\x1b[0m \x1b[32m', 'Finished retrieving', '\x1b[0m');
   } catch (error) {
-    console.error(`[x] ${error.message}`);
+    console.error('\x1b[41m', 'Error', '\x1b[0m \x1b[31m', error.message, '\x1b[0m');
   }
 })();
