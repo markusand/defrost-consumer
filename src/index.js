@@ -6,14 +6,21 @@ import date from './date.js';
 
 dotenv.config();
 
-const { DEFROST_USER, DEFROST_PSWD } = process.env;
+const {
+  DEFROST_USER,
+  DEFROST_PSWD,
+  DEFROST_CATCHMENT = 'andorra',
+} = process.env;
 
 (async () => {
   try {
-    const args = minimist(process.argv.slice(2));
+    const {
+      catchment = DEFROST_CATCHMENT,
+      ...rest
+    } = minimist(process.argv.slice(2));
 
     // Valid dates are required to prevent query the full API dataset
-    const dates = date.fromArguments(args);
+    const dates = date.fromArguments(rest);
     if (!dates.length) throw new Error('At least one date is required');
 
     // Authenticate the API
@@ -21,7 +28,8 @@ const { DEFROST_USER, DEFROST_PSWD } = process.env;
     await defrost.authenticate(credentials);
 
     // List asked rasters available in the API
-    const rasters = await defrost.getRastersList(dates);
+    console.log(`Loading rasters for ${catchment}...`);
+    const rasters = await defrost.getRastersList({ dates, catchment });
     if (!rasters.length) throw new Error('No rasters found for this dates');
 
     // Retrieve all rasters and save them as files

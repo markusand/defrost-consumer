@@ -13,6 +13,7 @@
   "rules": {
     "no-console": "off",
     "import/extensions": ["error", "always"],
-    "arrow-parens": ["error", "as-needed"]
+    "arrow-parens": ["error", "as-needed"],
+    "object-curly-newline": ["error", { "multiline": true, "consistent": true }]
   }
 }

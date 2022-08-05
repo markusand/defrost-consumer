@@ -19,14 +19,15 @@ Create a `.env` file with the API login credentials
 ```env
 DEFROST_USER=
 DEFROST_PSWD=
+DEFROST_CATCHMENT= (optional, defaults to 'andorra')
 ```
 
-Launch the script passing the desired dates as single parameters, a date range or a combination of both.
+Launch the script passing the desired date(s) as single parameters, a date range or a combination of both. Provide an optional catchment if not already set up in environment variables.
 
 > **Notice all dates must follow the YYYY-MM-DD format**
 
 ```bash
-node src/index.js 2022-01-06 2022-02-14
+node src/index.js 2022-01-06 2022-02-14 --catchment=andorra
 
 node src/index.js --from=2021-12-25 --until=2021-12-31
 

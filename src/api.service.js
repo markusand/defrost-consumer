@@ -9,8 +9,8 @@ const authenticate = async credentials => {
   api.defaults.headers.common = { Authorization: `Bearer ${data.access}` };
 };
 
-const getRastersList = async (dates = []) => {
-  const { data: rasters } = await api.get('catchments/andorra/sd-rasters/');
+const getRastersList = async ({ dates = [], catchment }) => {
+  const { data: rasters } = await api.get(`catchments/${catchment}/sd-rasters/`);
   return dates.length
     ? rasters.snowmaps.filter(raster => dates.includes(raster.date))
     : rasters.snowmaps;
