@@ -34,6 +34,14 @@ node src/index.js --from=2021-12-25 --until=2021-12-31
 node src/index.js 2022-01-06 2022-02-14 --from=2021-12-25 --until=2021-12-31
 ```
 
+Shorthand argument aliases are also available for convenience.
+
+| argument | alias |
+| --- | --- |
+| --catchment=andorra | -c andorra |
+| --from=2022-01-01 | -f 2022-01-01 |
+| --until=2022-01-06 | -u 2022-01-06 |
+
 A convenience npm start script is available as
 
 ```bash

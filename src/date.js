@@ -16,7 +16,7 @@ const dateFormatter = Intl.DateTimeFormat('fr-CA');
 const formatDate = date => dateFormatter.format(new Date(date));
 
 // Parse dates from arguments
-const fromArguments = ({ _: dates, from, until }) => {
+const fromArguments = ({ _: dates, f, from = f, u, until = u }) => {
   const invalidDate = dates.find(date => !isDate(date));
   if (invalidDate) throw new Error(`${invalidDate} is an invalid date`);
   if (!isRange(from, until)) throw new Error(`from ${from} until ${until} is an invalid range`);

@@ -15,7 +15,8 @@ const {
 (async () => {
   try {
     const {
-      catchment = DEFROST_CATCHMENT,
+      c = DEFROST_CATCHMENT,
+      catchment = c,
       ...rest
     } = minimist(process.argv.slice(2));
 
