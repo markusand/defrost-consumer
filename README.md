@@ -42,12 +42,14 @@ Shorthand argument aliases are also available for convenience.
 | --from=2022-01-01 | -f 2022-01-01 |
 | --until=2022-01-06 | -u 2022-01-06 |
 
-A convenience npm start script is available as
+Am npm start script is available for convenience as well.
 
 ```bash
-npm start -- 2022-01-06
+npm start -- --from=2022-01-01 --until=2022-01-06
 ```
 
-**Notice the double dash `--` that must be included after the start.**
+**Notice the extra double dash `--` that MUST be included after the `npm start`.**
 
-Rasters will be stored in `images` directory
+## Output
+
+Rasters will be stored in `images` directory. All rasters in `images` can always be deleted, but not the directory itself neither the `.gitkeep` file in it.
