@@ -14,7 +14,7 @@ const { DEFROST_USER, DEFROST_PSWD } = process.env;
 
     // Valid dates are required to prevent query the full API dataset
     const dates = date.fromArguments(args);
-    if (!dates.length) throw new Error('Some dates are invalid');
+    if (!dates.length) throw new Error('At least one date is required');
 
     // Authenticate the API
     const credentials = { username: DEFROST_USER, password: DEFROST_PSWD };
