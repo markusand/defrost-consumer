@@ -1,27 +1,19 @@
 import dotenv from 'dotenv';
 import minimist from 'minimist';
-import { eachDayOfInterval, isBefore, isValid } from 'date-fns';
 import defrost from './api.service.js';
 import fs from './fs.service.js';
+import date from './date.js';
 
 dotenv.config();
 
 const { DEFROST_USER, DEFROST_PSWD } = process.env;
 
-// Date validators
-const dateFormatter = Intl.DateTimeFormat('fr-CA');
-const formatDate = date => dateFormatter.format(new Date(date));
-const isDate = date => isValid(new Date(date));
-
 (async () => {
   try {
-    // Parse dates from arguments
-    const { _: singleDates, from, until } = minimist(process.argv.slice(2));
-    const datesRange = from && until && isBefore(new Date(from), new Date(until))
-      ? eachDayOfInterval({ start: new Date(from), end: new Date(until) })
-      : [];
-    const dates = [...singleDates.filter(isDate).map(formatDate), ...datesRange.map(formatDate)];
+    const args = minimist(process.argv.slice(2));
 
+    // Valid dates are required to prevent query the full API dataset
+    const dates = date.fromArguments(args);
     if (!dates.length) throw new Error('Some dates are invalid');
 
     // Authenticate the API
