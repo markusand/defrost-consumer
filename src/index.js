@@ -6,6 +6,7 @@ import date from './date.js';
 
 dotenv.config();
 
+const DEFROST_TYPE = 'sd';
 const {
   DEFROST_USER,
   DEFROST_PSWD,
@@ -17,8 +18,13 @@ const {
     const {
       c = DEFROST_CATCHMENT,
       catchment = c,
+      t = DEFROST_TYPE,
+      type = t,
       ...rest
     } = minimist(process.argv.slice(2));
+
+    // Validate requested data type
+    if (!['sce', 'sd', 'swe'].includes(type)) throw new Error(`${type} is not a valid type`);
 
     // Valid dates are required to prevent query the full API dataset
     const dates = date.fromArguments(rest);
@@ -30,14 +36,14 @@ const {
 
     // List asked rasters available in the API
     console.log(`Loading rasters for ${catchment}...`);
-    const rasters = await defrost.getRastersList({ dates, catchment });
+    const rasters = await defrost.getRastersList({ dates, catchment, type });
     if (!rasters.length) throw new Error('No rasters found for this dates');
 
     // Retrieve all rasters and save them as files
     const saved = rasters.map(async raster => {
       try {
         console.log(`· Loading ${raster.date}...`);
-        const { pathname } = new URL(`../images/${raster.file_name}`, import.meta.url);
+        const { pathname } = new URL(`../images/${type}/${raster.file_name}`, import.meta.url);
         const stream = await defrost.getRasterStream(raster.url);
         await fs.saveStream(pathname, stream);
         console.log('\x1b[32m', `Saved ${raster.date}`, '\x1b[0m');
